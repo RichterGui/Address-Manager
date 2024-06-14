@@ -1,9 +1,7 @@
 - USERS
 [x] Criar rota de cadastro de usuario(POST/users)
-[] Criar rota de listagem do usuario(GET)
-[] Criar rota para deletar usuario(DELETE)
-[] Criar rota de login para o usuario(POST/login)
-[] Criar middleware para verificar o usuario nas demais rotas
+[x] Criar rota de login para o usuario(POST/login)
+[x] Criar middleware para verificar o usuario nas demais rotas,
   * Criar validação com jwt
 
 - ADDRESS

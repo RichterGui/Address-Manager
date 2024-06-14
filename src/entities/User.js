@@ -15,14 +15,14 @@ export default class User {
   }
 
 
-  setName(name){
-    if(!name) {
+  setName(name) {
+    if (!name) {
       throw new Error('Name not informed')
     }
     this.name = name;
   }
-  setLastname(lastname){
-    if(!lastname) {
+  setLastname(lastname) {
+    if (!lastname) {
       throw new Error('Lastname not informed')
     }
     this.lastname = lastname;
@@ -30,14 +30,14 @@ export default class User {
 
   setEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!email || !emailRegex.test(email)){
-      throw new Error('Invalid email.')
+    if (!email || !emailRegex.test(email)) {
+      throw new Error('Invalid email.');
     }
     this.email = email
   }
 
   setPassword(password) {
-    if(!password) {
+    if (!password) {
       throw new Error('Password not informed.')
     }
 
