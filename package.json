@@ -5,13 +5,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "dev": "node --watch --trace-warnings src/server.js"
   },
   "keywords": [],
   "author": "guilhermerichter",
   "license": "ISC",
+  "engines": {
+    "node": "22.2.0"
+  },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0"
   },
   "devDependencies": {
@@ -21,6 +28,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.2.0",
-    "prettier": "^3.3.1"
+    "prettier": "^3.3.1",
+    "vitest": "^1.6.0"
   }
 }
