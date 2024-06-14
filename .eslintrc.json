@@ -9,5 +9,9 @@
         "sourceType": "module"
     },
     "rules": {
+        "max-len": "off",
+        "eslint-plugin-import/no-extraneous-dependencies": "off",
+        "class-methods-use-this": "off",
+        "eslint-plugin-import/extensions": "on"
     }
 }
