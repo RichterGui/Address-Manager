@@ -27,7 +27,7 @@ export default class UserController {
       }
       if (
         error.message.includes(
-          'Request body does not meet endpoint expectations on the attribute'
+          'Request body does not meet endpoint expectations on the attribute',
         )
       ) {
         return response.status(400).json({ error: error.message });
