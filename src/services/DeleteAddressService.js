@@ -3,8 +3,8 @@ export default class DeleteAddressService {
     this.addressRepository = repository;
   }
 
-  async execute(id) {
-    const address = await this.addressRepository.delete(id);
+  async execute(id, userid) {
+    const address = await this.addressRepository.delete(id, userid);
     return address;
   }
 }

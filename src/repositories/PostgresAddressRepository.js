@@ -3,7 +3,13 @@ import '../types/types.js';
 import { randomUUID } from 'node:crypto';
 import db from '../database/db.js';
 import Address from '../entities/Address.js';
+import PostgresLogsRepository from './PostgresLogsRepository.js';
+
 export default class PostgresAddressRepository extends IAddressRepository {
+  constructor() {
+    super();
+    this.logs = new PostgresLogsRepository();
+  }
   /**
    * @param {AddressType} address
    * @return {Promise <{AddressType}>}
@@ -60,8 +66,13 @@ export default class PostgresAddressRepository extends IAddressRepository {
     city,
     state,
     country,
+    userid,
   }) {
     try {
+      const actual = await db.query(`SELECT * FROM addresses WHERE id = $1`, [
+        id,
+      ]);
+
       const query =
         'UPDATE addresses SET description = $1, number = $2, street = $3, district = $4, reference = $5, zipcode = $6, city = $7, state = $8, country = $9, dt_update = CURRENT_TIMESTAMP WHERE id = $10 RETURNING *';
       const values = [
@@ -77,16 +88,32 @@ export default class PostgresAddressRepository extends IAddressRepository {
         id,
       ];
       const res = await db.query(query, values);
-      return res.rows.length ? res.rows[0] : null;
+      const item = res.rows.length ? res.rows[0] : null;
+      await this.logs.create({
+        userid: userid,
+        old: actual.rows[0],
+        modified: item,
+        operation: 'PUT',
+      });
+      return item;
     } catch (error) {
       throw error;
     }
   }
 
-  async delete(id) {
+  async delete(id, userid) {
     try {
+      const actual = await db.query(`SELECT * FROM addresses WHERE id = $1`, [
+        id,
+      ]);
       const query = 'DELETE FROM addresses WHERE id = $1';
       const res = await db.query(query, [id]);
+      await this.logs.create({
+        userid: userid,
+        old: actual.rows[0],
+        modified: { data: 'deleted' },
+        operation: 'DELETE',
+      });
       return res.rows[0];
     } catch (error) {
       throw error;

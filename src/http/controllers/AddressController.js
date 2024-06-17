@@ -38,7 +38,6 @@ export default class AddressController {
       });
       return response.status(200).json({ address });
     } catch (error) {
-      console.log(error);
       return response.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -67,7 +66,7 @@ export default class AddressController {
         state,
         country,
       } = request.body;
-
+      const { userid } = request.headers;
       const { id } = request.params;
 
       const addressUpdate = new UpdateAddressService(this.addressRepository);
@@ -82,6 +81,7 @@ export default class AddressController {
         city,
         state,
         country,
+        userid,
       });
       return response.status(200).json({ updatedAddress });
     } catch (error) {
@@ -92,8 +92,9 @@ export default class AddressController {
   async delete(request, response) {
     try {
       const { id } = request.params;
+      const { userid } = request.headers;
       const addressDelete = new DeleteAddressService(this.addressRepository);
-      const deletedAddress = await addressDelete.execute(id);
+      const deletedAddress = await addressDelete.execute(id, userid);
       return response
         .status(200)
         .json({ removed: deletedAddress, message: 'Deleted successfully' });
