@@ -2,7 +2,7 @@ import IAddressRepository from './IAddressRepository.js';
 import '../types/types.js';
 import { randomUUID } from 'node:crypto';
 import db from '../database/db.js';
-import Address from '../entities/Address';
+import Address from '../entities/Address.js';
 export default class PostgresAddressRepository extends IAddressRepository {
   /**
    * @param {AddressType} address
@@ -61,27 +61,35 @@ export default class PostgresAddressRepository extends IAddressRepository {
     state,
     country,
   }) {
-    const query =
-      'UPDATE addresses SET description = $1, number = $2, street = $3, district = $4, reference = $5, zipcode = $6, city = $7, state = $8, country = $9, dt_update = CURRENT_TIMESTAMP WHERE id = $10 RETURNING *';
-    const values = [
-      description,
-      number,
-      street,
-      district,
-      reference,
-      zipcode,
-      city,
-      state,
-      country,
-      id,
-    ];
-    const res = await db.query(query, values);
-    return res.rows.length ? res.rows[0] : null;
+    try {
+      const query =
+        'UPDATE addresses SET description = $1, number = $2, street = $3, district = $4, reference = $5, zipcode = $6, city = $7, state = $8, country = $9, dt_update = CURRENT_TIMESTAMP WHERE id = $10 RETURNING *';
+      const values = [
+        description,
+        number,
+        street,
+        district,
+        reference,
+        zipcode,
+        city,
+        state,
+        country,
+        id,
+      ];
+      const res = await db.query(query, values);
+      return res.rows.length ? res.rows[0] : null;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async delete(id) {
-    const query = 'DELETE FROM addresses WHERE id = $1';
-    const res = await db.query(query, [id]);
-    return res.rows[0];
+    try {
+      const query = 'DELETE FROM addresses WHERE id = $1';
+      const res = await db.query(query, [id]);
+      return res.rows[0];
+    } catch (error) {
+      throw error;
+    }
   }
 }
