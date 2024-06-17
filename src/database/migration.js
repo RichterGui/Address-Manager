@@ -27,6 +27,15 @@ async function migration() {
       dt_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (userid) REFERENCES users(id)
       )`);
+
+  await db.query(`CREATE TABLE IF NOT EXISTS logs (
+    id SERIAL PRIMARY KEY,
+    userid VARCHAR(128),
+    old JSONB,
+    modified JSONB,
+    operation VARCHAR(50),
+    dt_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
 }
 
 migration();

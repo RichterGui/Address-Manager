@@ -14,6 +14,7 @@ export default class UpdateAddressService {
     city,
     state,
     country,
+    userid,
   }) {
     const address = await this.addressRepository.updateById({
       id,
@@ -26,6 +27,7 @@ export default class UpdateAddressService {
       city,
       state,
       country,
+      userid,
     });
 
     return address;
