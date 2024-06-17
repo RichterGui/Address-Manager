@@ -15,7 +15,7 @@ async function migration() {
       id VARCHAR(128) PRIMARY KEY,
       userid VARCHAR(128),
       description VARCHAR(255),
-      housenumber INTEGER NOT NULL,
+      number INTEGER NOT NULL,
       street VARCHAR(100) NOT NULL,
       district VARCHAR(50) NOT NULL,
       reference VARCHAR(255),

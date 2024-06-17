@@ -9,7 +9,7 @@
 
 /**
  * @typedef {Object} AddressType
- * @property {string} id
+ * @property {string} userid
  * @property {string} description
  * @property {number} number
  * @property {string} street
