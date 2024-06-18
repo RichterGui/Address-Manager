@@ -11,8 +11,8 @@
 [x] Criar rota para remover um endereço especifico(DELETE/addresses/:id)
 
 - LOGS
-[] Registrar todas as operações de put e delete em um log, incluindo os dados que foram modificados e o id do usuario que realizou a operaçao
+[x] Registrar todas as operações de put e delete em um log, incluindo os dados que foram modificados e o id do usuario que realizou a operaçao
 
 - TEMPORARY ADDRESS SHARE
-[] Criar rota que permite compartilhar um endereço, deve ter tempo de expiração e gerar URL unica(POST/address/:id/share)
-[] Criar rota que permite acessar os detalhes do endereço compartilhado sem necessidade de login, desde que a URL esteja dentro do periodo valido(GET/shared/:token)
+[x] Criar rota que permite compartilhar um endereço, deve ter tempo de expiração e gerar URL unica(POST/address/:id/share)
+[x] Criar rota que permite acessar os detalhes do endereço compartilhado sem necessidade de login, desde que a URL esteja dentro do periodo valido(GET/shared/:token)

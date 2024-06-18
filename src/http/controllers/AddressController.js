@@ -2,6 +2,8 @@ import CreateAddressService from '../../services/CreateAddressService.js';
 import ListAddressService from '../../services/ListAddressService.js';
 import UpdateAddressService from '../../services/UpdateAddressService.js';
 import DeleteAddressService from '../../services/DeleteAddressService.js';
+import FindAddressById from '../../services/FindAddressById.js';
+import generateSharedToken from '../../helpers/generateSharedToken.js';
 
 export default class AddressController {
   constructor(repository) {
@@ -53,6 +55,31 @@ export default class AddressController {
     }
   }
 
+  async findById(request, response) {
+    try {
+      const { addressid } = request.body;
+      const findUnique = new FindAddressById(this.addressRepository);
+      const address = await findUnique.execute(addressid);
+      if (!address) {
+        return response.status(404).json({ error: 'Not found' });
+      }
+      const newAddress = {
+        description: address.description,
+        number: address.number,
+        street: address.street,
+        district: address.district,
+        reference: address.reference,
+        zipcode: address.zipcode,
+        city: address.ciry,
+        state: address.state,
+        country: address.country,
+      };
+      return response.status(200).json({ address: newAddress });
+    } catch (error) {
+      return response.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   async update(request, response) {
     try {
       const {
@@ -98,6 +125,16 @@ export default class AddressController {
       return response
         .status(200)
         .json({ removed: deletedAddress, message: 'Deleted successfully' });
+    } catch (error) {
+      return response.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
+  async share(request, response) {
+    try {
+      const { id } = request.params;
+      const token = await generateSharedToken(id);
+      return response.status(201).json({ token });
     } catch (error) {
       return response.status(500).json({ error: 'Internal server error' });
     }

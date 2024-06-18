@@ -6,6 +6,7 @@ import AddressController from './controllers/AddressController.js';
 import PostgresLogsRepository from '../repositories/PostgresLogsRepository.js';
 import LogsController from './controllers/LogsController.js';
 import verifyUser from './middlewares/verifyUser.js';
+import verifyJwtValidity from './middlewares/verifyJwtValidity.js';
 
 const userRepository = new PostgreUserRepository();
 const addressRepository = new PostgresAddressRepository();
@@ -21,6 +22,8 @@ router.post('/addresses', verifyUser, address.create.bind(address));
 router.get('/addresses', verifyUser, address.list.bind(address));
 router.put('/addresses/:id', verifyUser, address.update.bind(address));
 router.delete('/addresses/:id', verifyUser, address.delete.bind(address));
+router.post('/address/:id/share', verifyUser, address.share.bind(address));
 router.get('/logs', logs.list.bind(logs));
+router.get('/shared/:token', verifyJwtValidity, address.findById.bind(address));
 
 export default router;
