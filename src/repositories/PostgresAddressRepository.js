@@ -55,6 +55,12 @@ export default class PostgresAddressRepository extends IAddressRepository {
     return res.rows.length ? res.rows : null;
   }
 
+  async findUnique(id) {
+    const query = 'SELECT * FROM addresses where id = $1';
+    const res = await db.query(query, [id]);
+    return res.rows.length ? res.rows[0] : null;
+  }
+
   async updateById({
     id,
     description,
