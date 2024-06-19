@@ -19,9 +19,8 @@ export default class UserController {
         email,
         password,
       });
-      return response.status(200).json({ id: user.id, name: user.name });
+      return response.status(201).json({ id: user.id, name: user.name });
     } catch (error) {
-      console.log(error);
       if (error.message == 'Email already exists') {
         return response.status(400).json({ error: 'Email already exists' });
       }
@@ -42,9 +41,8 @@ export default class UserController {
       await validateUserLoginParams(email, password);
       const userLogin = new UserLoginService(this.userRepository);
       const user = await userLogin.execute({ email, password });
-      return response.status(200).json({ user });
+      return response.status(200).json({ ...user });
     } catch (error) {
-      console.log(error);
       return response.status(500).json({ error: 'Internal server error' });
     }
   }

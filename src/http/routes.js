@@ -23,7 +23,7 @@ router.get('/addresses', verifyUser, address.list.bind(address));
 router.put('/addresses/:id', verifyUser, address.update.bind(address));
 router.delete('/addresses/:id', verifyUser, address.delete.bind(address));
 router.post('/address/:id/share', verifyUser, address.share.bind(address));
-router.get('/logs', logs.list.bind(logs));
 router.get('/shared/:token', verifyJwtValidity, address.findById.bind(address));
+router.get('/logs', logs.list.bind(logs));
 
 export default router;

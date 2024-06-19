@@ -120,7 +120,7 @@ export default class PostgresAddressRepository extends IAddressRepository {
         modified: { data: 'deleted' },
         operation: 'DELETE',
       });
-      return res.rows[0];
+      return res.rowCount > 0 ? 'Removed' : null;
     } catch (error) {
       throw error;
     }
