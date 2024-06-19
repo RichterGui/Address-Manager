@@ -38,7 +38,7 @@ export default class AddressController {
         state,
         country,
       });
-      return response.status(200).json({ address });
+      return response.status(200).json({ ...address });
     } catch (error) {
       return response.status(500).json({ error: 'Internal server error' });
     }
@@ -74,7 +74,7 @@ export default class AddressController {
         state: address.state,
         country: address.country,
       };
-      return response.status(200).json({ address: newAddress });
+      return response.status(200).json({ ...newAddress });
     } catch (error) {
       return response.status(500).json({ error: 'Internal server error' });
     }
@@ -110,7 +110,10 @@ export default class AddressController {
         country,
         userid,
       });
-      return response.status(200).json({ updatedAddress });
+      if (!updatedAddress) {
+        return response.status(404).json({ error: 'Not found' });
+      }
+      return response.status(200).json({ ...updatedAddress });
     } catch (error) {
       return response.status(500).json({ error: 'Internal server error' });
     }
@@ -122,9 +125,10 @@ export default class AddressController {
       const { userid } = request.headers;
       const addressDelete = new DeleteAddressService(this.addressRepository);
       const deletedAddress = await addressDelete.execute(id, userid);
-      return response
-        .status(200)
-        .json({ removed: deletedAddress, message: 'Deleted successfully' });
+      if (!deletedAddress) {
+        return response.status(404).json({ error: 'Not found' });
+      }
+      return response.status(200).json({ message: 'Deleted successfully' });
     } catch (error) {
       return response.status(500).json({ error: 'Internal server error' });
     }

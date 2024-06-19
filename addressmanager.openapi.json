@@ -1,0 +1,950 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Address Manager",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Address-Manager"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "[USERS] - Create new user",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastname": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "1"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida ou email já existe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Email already exists"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "[USERS] - Authenticate an user",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário autenticado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastname": {
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NzM3NTY4fQ.W51oNYtdVwP2PaoGurJHF5tXA33iC2rfzu2gBPyCWv0"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida ou credenciais incorretas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addresses": {
+      "post": {
+        "summary": "[ADDRESS] - Create new address",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [
+          {
+            "name": "accesstoken",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NjExMjYzfQ.gvHAMzvyorWtJS_qYwVYioK7Xbo4oiGUEhMvv5QVH-s"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "End. da empresa X"
+                  },
+                  "number": {
+                    "type": "integer",
+                    "example": 1493
+                  },
+                  "street": {
+                    "type": "string",
+                    "example": "Rua Guimarães Rosa"
+                  },
+                  "district": {
+                    "type": "string",
+                    "example": "Centro"
+                  },
+                  "reference": {
+                    "type": "string",
+                    "example": "Próximo à agencia do banco Y"
+                  },
+                  "zipcode": {
+                    "type": "string",
+                    "example": "123123123-123"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "São Paulo"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "SP"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Brasil"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Endereço criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userid": {
+                      "type": "string",
+                      "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "End. da empresa X"
+                    },
+                    "number": {
+                      "type": "integer",
+                      "example": 1493
+                    },
+                    "street": {
+                      "type": "string",
+                      "example": "Rua Guimarães Rosa"
+                    },
+                    "district": {
+                      "type": "string",
+                      "example": "Centro"
+                    },
+                    "reference": {
+                      "type": "string",
+                      "example": "Próximo à agencia do banco Y"
+                    },
+                    "zipcode": {
+                      "type": "string",
+                      "example": "123123123-123"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "São Paulo"
+                    },
+                    "state": {
+                      "type": "string",
+                      "example": "SP"
+                    },
+                    "country": {
+                      "type": "string",
+                      "example": "Brasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "[ADDRESS] - List all addresses by user",
+        "tags": [
+          "Address-Manager"
+        ],
+        "responses": {
+          "200": {
+            "description": "Array de endereços",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "userid": {
+                        "type": "string",
+                        "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "End. da empresa X"
+                      },
+                      "number": {
+                        "type": "integer",
+                        "example": 1493
+                      },
+                      "street": {
+                        "type": "string",
+                        "example": "Rua Guimarães Rosa"
+                      },
+                      "district": {
+                        "type": "string",
+                        "example": "Centro"
+                      },
+                      "reference": {
+                        "type": "string",
+                        "example": "Próximo à agencia do banco Y"
+                      },
+                      "zipcode": {
+                        "type": "string",
+                        "example": "123123123-123"
+                      },
+                      "city": {
+                        "type": "string",
+                        "example": "São Paulo"
+                      },
+                      "state": {
+                        "type": "string",
+                        "example": "SP"
+                      },
+                      "country": {
+                        "type": "string",
+                        "example": "Brasil"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accesstoken",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NjExMjYzfQ.gvHAMzvyorWtJS_qYwVYioK7Xbo4oiGUEhMvv5QVH-s"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+            }
+          }
+        ]
+      }
+    },
+    "/addresses/{id}": {
+      "put": {
+        "summary": "[ADDRESS] - update address",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4c1e4854-6d25-4ed4-9e27-dbba062031fd"
+            }
+          },
+          {
+            "name": "accesstoken",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NjExMjYzfQ.gvHAMzvyorWtJS_qYwVYioK7Xbo4oiGUEhMvv5QVH-s"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "example": "lanchonete casa do lanche"
+                  },
+                  "number": {
+                    "type": "integer",
+                    "example": 1493
+                  },
+                  "street": {
+                    "type": "string",
+                    "example": "Rua Guimarães Rosa"
+                  },
+                  "district": {
+                    "type": "string",
+                    "example": "Centro"
+                  },
+                  "reference": {
+                    "type": "string",
+                    "example": "Próximo à agencia do BB"
+                  },
+                  "zipcode": {
+                    "type": "string",
+                    "example": "123123123-123"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Uruguaiana"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "RS"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Brasil"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Endereço atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "680b76b0-908d-48e8-a8e0-46c3d359a14f"
+                    },
+                    "userid": {
+                      "type": "string",
+                      "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "lanchonete casa do lanche"
+                    },
+                    "number": {
+                      "type": "integer",
+                      "example": 1493
+                    },
+                    "street": {
+                      "type": "string",
+                      "example": "Rua Guimarães Rosa"
+                    },
+                    "district": {
+                      "type": "string",
+                      "example": "Centro"
+                    },
+                    "reference": {
+                      "type": "string",
+                      "example": "Próximo à agencia do BB"
+                    },
+                    "zipcode": {
+                      "type": "string",
+                      "example": "123123123-123"
+                    },
+                    "city": {
+                      "type": "string",
+                      "example": "Uruguaiana"
+                    },
+                    "state": {
+                      "type": "string",
+                      "example": "RS"
+                    },
+                    "country": {
+                      "type": "string",
+                      "example": "Brasil"
+                    },
+                    "dt_create": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-06-18T16:24:19.029Z"
+                    },
+                    "dt_update": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-06-18T22:39:26.509Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "[ADDRESS] - delete address",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4c1e4854-6d25-4ed4-9e27-dbba062031fd"
+            }
+          },
+          {
+            "name": "accesstoken",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NjExMjYzfQ.gvHAMzvyorWtJS_qYwVYioK7Xbo4oiGUEhMvv5QVH-s"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereço deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Endereço não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/address/{id}/share": {
+      "post": {
+        "summary": "[SHARE] - Create a shared address",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "4c1e4854-6d25-4ed4-9e27-dbba062031fd"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "accesstoken",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNoIjoiMzVhOWMxNzYtMzBkMi00MTkzLTgyOTktYWY0MzZmNmQwY2Y2IiwiaWF0IjoxNzE4NjExMjYzfQ.gvHAMzvyorWtJS_qYwVYioK7Xbo4oiGUEhMvv5QVH-s"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Token compartilhado gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAzNzBlZmMwLWQ2ZTMtNGIyNS1hNjFkLTAzMDlhMGM1YWUwYiIsImlhdCI6MTcxODc0MTQ3MywiZXhwIjoxNzE4NzQzMjczfQ.9mn3Psmkl04XifPc8JPh2WiufkOMqKkspUppvdhaBi8"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shared/{token}": {
+      "get": {
+        "summary": "[SHARE] - Get a shared address",
+        "tags": [
+          "Address-Manager"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAzNzBlZmMwLWQ2ZTMtNGIyNS1hNjFkLTAzMDlhMGM1YWUwYiIsImlhdCI6MTcxODc0MTQ3MywiZXhwIjoxNzE4NzQzMjczfQ.9mn3Psmkl04XifPc8JPh2WiufkOMqKkspUppvdhaBi8"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna os detalhes do endereço temporário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "example": "End. x"
+                    },
+                    "number": {
+                      "type": "integer",
+                      "example": 1493
+                    },
+                    "street": {
+                      "type": "string",
+                      "example": "Rua Guimarães Rosa"
+                    },
+                    "district": {
+                      "type": "string",
+                      "example": "Centro"
+                    },
+                    "reference": {
+                      "type": "string",
+                      "example": "Próximo à agencia do BB"
+                    },
+                    "zipcode": {
+                      "type": "string",
+                      "example": "123123123-123"
+                    },
+                    "state": {
+                      "type": "string",
+                      "example": "RS"
+                    },
+                    "country": {
+                      "type": "string",
+                      "example": "Brasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Token não encontrado ou expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Token not found or expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logs": {
+      "get": {
+        "summary": "[LOGS] - List all logs",
+        "tags": [
+          "Address-Manager"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de logs de modificações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "userid": {
+                        "type": "string",
+                        "example": "35a9c176-30d2-4193-8299-af436f6d0cf6"
+                      },
+                      "old": {
+                        "type": "object",
+                        "example": {}
+                      },
+                      "modified": {
+                        "type": "object",
+                        "example": {}
+                      },
+                      "operation": {
+                        "type": "string",
+                        "example": "PUT"
+                      },
+                      "dt_create": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-06-18T01:32:52.147Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  },
+  "servers": []
+}

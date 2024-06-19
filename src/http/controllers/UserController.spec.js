@@ -53,7 +53,6 @@ describe('User controller', () => {
 
     await userController.create(request, response);
 
-    console.log(repository);
     expect(response.status).toHaveBeenCalledWith(400);
     expect(response.json).toHaveBeenCalledWith({
       error: 'Email already exists',
